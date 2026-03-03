@@ -1,0 +1,11 @@
+# Ignore build outputs
+nitcbase
+nitcbase-debug
+*.o
+
+# Ignore database files (Don't push your binary disk!)
+Disk/disk
+Disk/disk.xfs
+
+# Ignore VS Code settings
+.vscode/
