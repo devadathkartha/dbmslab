@@ -48,3 +48,26 @@ int AttrCacheTable::getAttrCatEntry(int relId, int attrOffset, AttrCatEntry* att
   // 4. If we reach the end of the list and didn't find it
   return E_ATTRNOTEXIST;
 }
+
+int AttrCacheTable::getAttrCatEntry(int relId, char attrName[ATTR_SIZE], AttrCatEntry* attrCatBuf) {
+
+  // Check that relId is valid and corresponds to an open relation
+  if (relId < 0 || relId >= MAX_OPEN) {
+    return E_OUTOFBOUND;
+  }
+  if (attrCache[relId] == nullptr) {
+    return E_RELNOTOPEN;
+  }
+
+  // Iterate over the entries in the attribute cache linked list 
+  // and set attrCatBuf to the entry that matches attrName
+  for (AttrCacheEntry* entry = attrCache[relId]; entry != nullptr; entry = entry->next) {
+    if (strcmp(entry->attrCatEntry.attrName, attrName) == 0) {
+      *attrCatBuf = entry->attrCatEntry;
+      return SUCCESS;
+    }
+  }
+
+  // No attribute with name attrName found for the relation
+  return E_ATTRNOTEXIST;
+}
